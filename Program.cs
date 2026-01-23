@@ -1,69 +1,56 @@
 ﻿// part 2 between 6527 and 7462
-var inputMovementsDemo = "L68\r\nL30\r\nR48\r\nL5\r\nR60\r\nL55\r\nL1\r\nL99\r\nR14\r\nL82";
 
-var inputMovements = File.ReadAllText("input-d1-p1.txt");
+using AdvendOfCode.Days;
 
-var movements = inputMovements.Split("\r\n").ToList();
+Console.WriteLine("Welcome to Advent of Code");
+int day = -1;
+var runProgram = true;
+long result = -1;
 
-var timesReachedZero = CalculateTimesReachedOrPassedZero(movements);
-
-Console.WriteLine("timesReachedZero=" + timesReachedZero);
-
-int CalculateTimesReachedOrPassedZero(List<string> movements)
+while (runProgram)
 {
-    var startPosition = 50;
-
-    var currentPosition = startPosition;
-
-    var timesReachedZero = 0;
-
-    foreach (var movement in movements)
+    Console.WriteLine("Which day challenge would you like to run? (Press 1 to 24) ");
+    while (!int.TryParse(Console.ReadLine(), out day))
     {
-        var direction = movement[0];
-        var nbrOfPositions = int.Parse(movement[1..]);
-        var test = "";
-        var nbrOfTurns = 0;
-
-        if(direction == 'L')
-        {
-            nbrOfPositions = nbrOfPositions * -1;
-        }
-
-        if(Math.Abs(nbrOfPositions) > 99) 
-        { 
-            timesReachedZero += Math.Abs(nbrOfPositions / 100);
-
-            nbrOfPositions = nbrOfPositions % 100;
-        }
-
-        if (nbrOfPositions < 0 && Math.Abs(nbrOfPositions) > currentPosition && currentPosition != 0)
-        {
-            timesReachedZero++;
-        }
-
-        else if(currentPosition + nbrOfPositions > 100)
-        {
-            timesReachedZero++;
-        }
-
-        else if((nbrOfPositions + currentPosition == 0) || (nbrOfPositions +currentPosition) == 100)
-        {
-            timesReachedZero++;
-        }
-
-        currentPosition = (currentPosition + nbrOfPositions) % 100;
-        if(currentPosition < 0)
-        {
-            currentPosition = 100 - Math.Abs(currentPosition);
-        }
+        Console.WriteLine("Error reading your day. Please try again.");
     }
 
-    return timesReachedZero;
+    Console.WriteLine("Would you like to run the demo input? (y/n) ");
+    var isDemoRun = Console.ReadLine() == "y";
+
+    switch (day)
+    {
+        case 1:
+            var dayOne = new Day01();
+            result = dayOne.Run(isDemoRun);
+            break;
+
+        case 2:
+            var dayTwo = new Day02();
+            result = dayTwo.Run(isDemoRun);
+            break;
+        case 3:
+            var dayThree = new Day03();
+            result = dayThree.Run(isDemoRun);
+            break;
+
+        default:
+
+
+            break;
+    }
+
+    if(result == -1)
+    {
+        Console.WriteLine("Error: Invalid day");
+    }
+    else
+    {
+        Console.WriteLine($"Day {day} is demo {isDemoRun} Result = {result}");
+    }
+
+    Console.WriteLine($"Exit? (y/n): ");
+    runProgram = Console.ReadLine() != "y";
 }
 
 
-(int endPosition, int timesPassedOnZero) handleNegativePosition(int position) 
-    => ((position % 100) + 100, Math.Abs(position / 100) + 1);
-
-(int endPosition, int timesPassedOnZero) handleBigPosition(int position) 
-    => (position % 100, Math.Abs(position / 100));
