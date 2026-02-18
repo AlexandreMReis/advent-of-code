@@ -11,7 +11,7 @@ public class Day02
         }
         else
         {
-            idsRangesStr = File.ReadAllText("input-d2-p1.txt");
+            idsRangesStr = File.ReadAllText("input-d2.txt");
         }
 
         var idsRanges = idsRangesStr.Split(",").ToList();
@@ -21,7 +21,7 @@ public class Day02
         return invalidIds.Sum();
     }
 
-    private List<long> GetInvalidIdsPartOne(List<string> idsRanges)
+    public List<long> GetInvalidIdsPartOne(List<string> idsRanges)
     {
         var invalidIds = new List<long>();
 
@@ -48,7 +48,7 @@ public class Day02
         return invalidIds;
     }
 
-    private List<long> GetInvalidIdsPartTwo(List<string> idsRanges)
+    public List<long> GetInvalidIdsPartTwo(List<string> idsRanges)
     {
         var invalidIds = new List<long>();
 

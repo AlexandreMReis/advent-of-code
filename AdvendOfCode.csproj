@@ -8,13 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="input-d3-p1.txt">
+    <Compile Remove="UnitTests\**" />
+    <EmbeddedResource Remove="UnitTests\**" />
+    <None Remove="UnitTests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="input-d3.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input-d2-p1.txt">
+    <None Update="input-d2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input-d1-p1.txt">
+    <None Update="input-d1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

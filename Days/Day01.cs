@@ -11,7 +11,7 @@ public class Day01
         }
         else
         {
-            inputMovements = File.ReadAllText("input-d1-p1.txt");
+            inputMovements = File.ReadAllText("input-d1.txt");
         }
 
         var movements = inputMovements.Split("\r\n").ToList();
@@ -21,7 +21,7 @@ public class Day01
         return timesReachedZero;
     }
 
-    private int CalculateTimesReachedOrPassedZero(List<string> movements)
+    public int CalculateTimesReachedOrPassedZero(List<string> movements)
     {
         var startPosition = 50;
 

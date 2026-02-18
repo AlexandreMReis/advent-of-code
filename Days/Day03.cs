@@ -1,8 +1,5 @@
 ﻿namespace AdvendOfCode.Days;
 
-//2nd part
-//1st try: 166345822896410
-
 public class Day03
 {
 
@@ -15,17 +12,15 @@ public class Day03
         }
         else
         {
-            banksStr = File.ReadAllText("input-d3-p1.txt");
+            banksStr = File.ReadAllText("input-d3.txt");
         }
 
         var banks = banksStr.Split("\r\n").ToList();
 
-        var banksHighestJoltages = GetBanksHighestJoltagesPartTwo(banks);
-
-        return banksHighestJoltages.Sum();
+        return GetBanksHighestJoltagesPartOne(banks);
     }
 
-    private List<long> GetBanksHighestJoltagesPartOne(List<string> banks)
+    public long GetBanksHighestJoltagesPartOne(List<string> banks)
     {
         var banksHighestJoltages = new List<long>();
         
@@ -54,10 +49,10 @@ public class Day03
             banksHighestJoltages.Add(int.Parse(highestBatteryJoltage.ToString() + secondHighestBatteryJoltage.ToString()));
         }
 
-        return banksHighestJoltages;
+        return banksHighestJoltages.Sum();
     }
 
-    private List<long> GetBanksHighestJoltagesPartTwo(List<string> banks)
+    public long GetBanksHighestJoltagesPartTwo(List<string> banks)
     {
         var banksHighestJoltages = new List<long>();
 
@@ -68,7 +63,7 @@ public class Day03
             banksHighestJoltages.Add(long.Parse(highestVoltage));
         }
 
-        return banksHighestJoltages;
+        return banksHighestJoltages.Sum();
     }
 
     private string GetHighestJoltage(string bank, int nbrBatteriesLeft)
