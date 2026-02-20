@@ -2,7 +2,6 @@
 
 public class Day03
 {
-
     public long Run(bool runDemo = false)
     {
         var banksStr = string.Empty;

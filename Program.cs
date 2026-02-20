@@ -33,9 +33,12 @@ while (runProgram)
             var dayThree = new Day03();
             result = dayThree.Run(isDemoRun);
             break;
+        case 4:
+            var dayFour = new Day04();
+            result = dayFour.Run(isDemoRun);
+            break;
 
         default:
-
 
             break;
     }
