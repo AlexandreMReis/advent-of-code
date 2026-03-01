@@ -24,14 +24,14 @@ public class Day05
 
         var sw = Stopwatch.StartNew();
 
-        var output = GetHowManyFreshIdsPartOne(ranges, ids);
-        sw.Stop();
-        Console.WriteLine("Result part one: " + output);
-        Console.WriteLine("Elapsed time on part one: " + sw.ElapsedMilliseconds);
+        //var output = GetHowManyFreshIdsPartOne(ranges, ids);
+        //sw.Stop();
+        //Console.WriteLine("Result part one: " + output);
+        //Console.WriteLine("Elapsed time on part one: " + sw.ElapsedMilliseconds);
 
-        sw = Stopwatch.StartNew();
+        //sw = Stopwatch.StartNew();
 
-        output = GetHowManyFreshIdsPartTwo(ranges);
+        var output = GetHowManyFreshIdsPartTwo(ranges);
         sw.Stop();
         Console.WriteLine("Result part two: " + output);
         Console.WriteLine("Elapsed time on part two: " + sw.ElapsedMilliseconds);
@@ -39,20 +39,20 @@ public class Day05
         return output;
     }
 
-    private List<List<long>> BreakIntoMultipleLists(List<long> ids, int listSize = 1000)
-    {
-        var output = new List<List<long>>();
+    //private List<List<long>> BreakIntoMultipleLists(List<long> ids, int listSize = 1000)
+    //{
+    //    var output = new List<List<long>>();
 
-        for(int i = 0; i < (ids.Count()/listSize); i++)
-        {
-            var from = i * listSize;
-            var to = i * listSize + listSize;
+    //    for(int i = 0; i < (ids.Count()/listSize); i++)
+    //    {
+    //        var from = i * listSize;
+    //        var to = i * listSize + listSize;
 
-            output.Add(ids[from..to]);
-        }
+    //        output.Add(ids[from..to]);
+    //    }
 
-        return output;
-    }
+    //    return output;
+    //}
 
     public int GetHowManyFreshIdsPartOne(List<string> rangesStr, List<string> idsStr)
     {
@@ -143,21 +143,83 @@ public class Day05
 
     public int GetHowManyFreshIdsPartTwo(List<string> rangesStr)
     {
-        HashSet<long> freshIds = [];
+        List<Tuple<long,long>> finalFreshIdRanges = [];
 
-        var ranges = rangesStr.Select(el => Tuple.Create(long.Parse(el.Split('-')[0]), long.Parse(el.Split('-')[1]))).OrderBy(el => el.Item1);
+        var ranges = rangesStr.Select(el => Tuple.Create(long.Parse(el.Split('-')[0]), long.Parse(el.Split('-')[1])))
+                              .OrderBy(e => e.Item1)
+                              .ToList();
 
-        foreach (var range in ranges)
+        for (int i = 0; i < ranges.Count; i++)
         {
-            for(long i = range.Item1; i <= range.Item2; i++)
+            var range = ranges[i];
+
+            if (!finalFreshIdRanges.Any()) { finalFreshIdRanges.Add(range); }
+            else
             {
-                if (!freshIds.Contains(i))
-                {
-                    freshIds.Add(i);
-                }
+                AddNewFreshIdRanges(finalFreshIdRanges, range);
+                finalFreshIdRanges = finalFreshIdRanges.OrderBy(r => r.Item1).ToList();
             }
         }
 
-        return freshIds.Count;
+        var nbrFreshIds = CountFreshIds(finalFreshIdRanges);
+
+        return finalFreshIdRanges.Count;
+    }
+
+
+    public void AddNewFreshIdRanges(List<Tuple<long, long>> finalFreshIdRanges, Tuple<long, long> newFreshIdrange)
+    {
+        for (var i = 0; i < finalFreshIdRanges.Count(); i++)
+        {
+            // boundary case at start of list
+            if(i == 0 && newFreshIdrange.Item2 < finalFreshIdRanges[i].Item1)
+            {
+                finalFreshIdRanges.Add(newFreshIdrange);
+                break;
+            }
+
+            // boundary case at end of list
+            if (i+1 == finalFreshIdRanges.Count && newFreshIdrange.Item1 > finalFreshIdRanges[i].Item2)
+            {
+                finalFreshIdRanges.Add(newFreshIdrange);
+                break;
+            }
+
+            // usual case with no matches
+            if (newFreshIdrange.Item1 > finalFreshIdRanges[i].Item2 &&
+                newFreshIdrange.Item2 < finalFreshIdRanges[i+1].Item1)
+            {
+                finalFreshIdRanges.Add(newFreshIdrange);
+                break;
+            }
+
+            // fresh ids at end range already defined
+            if (newFreshIdrange.Item1 > finalFreshIdRanges[i].Item2 &&
+                newFreshIdrange.Item2 > finalFreshIdRanges[i + 1].Item1)
+            {
+                //continue here 
+                finalFreshIdRanges.Add(Tuple.Create<long,long>(newFreshIdrange.Item1, finalFreshIdRanges[i + 1].Item1 - 1));
+                break;
+            }
+
+            // fresh ids at start range already defined
+            if (newFreshIdrange.Item1 < finalFreshIdRanges[i].Item2 &&
+                newFreshIdrange.Item2 < finalFreshIdRanges[i + 1].Item1)
+            {
+                finalFreshIdRanges.Add(Tuple.Create<long,long>(finalFreshIdRanges[i].Item2 + 1, newFreshIdrange.Item2));
+                break;
+            }
+        }
+    }
+
+    public long CountFreshIds(List<Tuple<long, long>> finalFreshIdRanges)
+    {
+        long output = 0;
+        foreach(var range in finalFreshIdRanges)
+        {
+            output += range.Item2 - range.Item1;
+        }
+
+        return output;
     }
 }
