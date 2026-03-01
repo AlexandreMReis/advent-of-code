@@ -2,9 +2,11 @@
 
 namespace AdvendOfCode.Days;
 
+
+// part two answer 316243047469783 too low
 public class Day05
 {
-    public int Run(bool runDemo = false)
+    public long Run(bool runDemo = false)
     {
         var inputStr = string.Empty;
         if (runDemo)
@@ -141,7 +143,7 @@ public class Day05
     //    });
     //}
 
-    public int GetHowManyFreshIdsPartTwo(List<string> rangesStr)
+    public long GetHowManyFreshIdsPartTwo(List<string> rangesStr)
     {
         List<Tuple<long,long>> finalFreshIdRanges = [];
 
@@ -163,7 +165,7 @@ public class Day05
 
         var nbrFreshIds = CountFreshIds(finalFreshIdRanges);
 
-        return finalFreshIdRanges.Count;
+        return nbrFreshIds;
     }
 
 
@@ -193,22 +195,26 @@ public class Day05
                 break;
             }
 
-            // fresh ids at end range already defined
-            if (newFreshIdrange.Item1 > finalFreshIdRanges[i].Item2 &&
-                newFreshIdrange.Item2 > finalFreshIdRanges[i + 1].Item1)
-            {
-                //continue here 
-                finalFreshIdRanges.Add(Tuple.Create<long,long>(newFreshIdrange.Item1, finalFreshIdRanges[i + 1].Item1 - 1));
-                break;
-            }
-
-            // fresh ids at start range already defined
+            //// fresh ids at start range already defined
             if (newFreshIdrange.Item1 < finalFreshIdRanges[i].Item2 &&
-                newFreshIdrange.Item2 < finalFreshIdRanges[i + 1].Item1)
+                newFreshIdrange.Item2 > finalFreshIdRanges[i].Item2)
             {
                 finalFreshIdRanges.Add(Tuple.Create<long,long>(finalFreshIdRanges[i].Item2 + 1, newFreshIdrange.Item2));
                 break;
             }
+
+            //// fresh ids at end range already defined
+            //if (newFreshIdrange.Item1 > finalFreshIdRanges[i].Item2 &&
+            //    newFreshIdrange.Item2 > finalFreshIdRanges[i + 1].Item1)
+            //{
+            //    var start = newFreshIdrange.Item1;
+            //    var end = finalFreshIdRanges[i + 1].Item1;
+
+            //    finalFreshIdRanges.Add(Tuple.Create<long, long>(newFreshIdrange.Item1, finalFreshIdRanges[i + 1].Item1 - 1));
+            //    break;
+            //}
+
+
         }
     }
 
@@ -217,7 +223,7 @@ public class Day05
         long output = 0;
         foreach(var range in finalFreshIdRanges)
         {
-            output += range.Item2 - range.Item1;
+            output += (range.Item2 - range.Item1) + 1;
         }
 
         return output;
