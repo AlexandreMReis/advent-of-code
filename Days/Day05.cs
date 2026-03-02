@@ -2,8 +2,6 @@
 
 namespace AdvendOfCode.Days;
 
-
-// part two answer 316243047469783 too low
 public class Day05
 {
     public long Run(bool runDemo = false)
@@ -26,37 +24,22 @@ public class Day05
 
         var sw = Stopwatch.StartNew();
 
-        //var output = GetHowManyFreshIdsPartOne(ranges, ids);
-        //sw.Stop();
-        //Console.WriteLine("Result part one: " + output);
-        //Console.WriteLine("Elapsed time on part one: " + sw.ElapsedMilliseconds);
+        var output = GetHowManyFreshIdsPartOne(ranges, ids);
+        sw.Stop();
+        Console.WriteLine("Result part one: " + output);
+        Console.WriteLine("Elapsed time on part one: " + sw.ElapsedTicks); //48ms
 
-        //sw = Stopwatch.StartNew();
+        sw = Stopwatch.StartNew();
 
-        var output = GetHowManyFreshIdsPartTwo(ranges);
+        output = GetHowManyFreshIdsPartTwo(ranges);
         sw.Stop();
         Console.WriteLine("Result part two: " + output);
-        Console.WriteLine("Elapsed time on part two: " + sw.ElapsedMilliseconds);
+        Console.WriteLine("Elapsed time on part two: " + sw.ElapsedTicks); //1.6ms
 
         return output;
     }
 
-    //private List<List<long>> BreakIntoMultipleLists(List<long> ids, int listSize = 1000)
-    //{
-    //    var output = new List<List<long>>();
-
-    //    for(int i = 0; i < (ids.Count()/listSize); i++)
-    //    {
-    //        var from = i * listSize;
-    //        var to = i * listSize + listSize;
-
-    //        output.Add(ids[from..to]);
-    //    }
-
-    //    return output;
-    //}
-
-    public int GetHowManyFreshIdsPartOne(List<string> rangesStr, List<string> idsStr)
+    public long GetHowManyFreshIdsPartOne(List<string> rangesStr, List<string> idsStr)
     {
         var ranges = rangesStr.Select(el => Tuple.Create(long.Parse(el.Split('-')[0]), long.Parse(el.Split('-')[1]))).OrderBy(el => el.Item1);
 
@@ -90,59 +73,6 @@ public class Day05
         return nbrFreshIds;
     }
 
-    //public async Task<int> GetHowManyFreshIdsPartOneAsync(List<string> rangesStr, List<string> idsStr)
-    //{
-    //    var ranges = rangesStr.Select(el => Tuple.Create(long.Parse(el.Split('-')[0]), long.Parse(el.Split('-')[1]))).OrderBy(el => el.Item1);
-
-    //    var ids = idsStr.Select(long.Parse).ToList();
-
-    //    var splittedIds = BreakIntoMultipleLists(ids, 2);
-        
-    //    var nbrFreshIds = 0;
-
-    //    var tasksToRun = new List<Task<int>>();
-
-    //    foreach(var splittedId in splittedIds)
-    //    {
-    //        tasksToRun.Add(GetHowManyFreshIdsAsync(splittedId, ranges));
-    //    }
-
-    //    await Task.WhenAll(tasksToRun);
-
-    //    foreach(var task in tasksToRun)
-    //    {
-    //        nbrFreshIds += task.Result;
-    //    }
- 
-    //    return nbrFreshIds;
-    //}
-
-    //private async Task<int> GetHowManyFreshIdsAsync(List<long> ids, IOrderedEnumerable<Tuple<long, long>> ranges)
-    //{
-    //    return await new Task<int>(() =>
-    //    {
-    //        var nbrFreshIds = 0;
-
-    //        foreach (long id in ids)
-    //        {
-    //            foreach (var range in ranges)
-    //            {
-    //                if (id > range.Item1 && id < range.Item2)
-    //                {
-    //                    nbrFreshIds++; // a fresh id
-    //                    break;
-    //                }
-    //                else if (id < range.Item1)
-    //                {
-    //                    break; // not a fresh id
-    //                }
-    //            }
-    //        }
-
-    //        return nbrFreshIds;
-    //    });
-    //}
-
     public long GetHowManyFreshIdsPartTwo(List<string> rangesStr)
     {
         List<Tuple<long,long>> finalFreshIdRanges = [];
@@ -167,7 +97,6 @@ public class Day05
 
         return nbrFreshIds;
     }
-
 
     public void AddNewFreshIdRanges(List<Tuple<long, long>> finalFreshIdRanges, Tuple<long, long> newFreshIdrange)
     {
@@ -195,26 +124,54 @@ public class Day05
                 break;
             }
 
-            //// fresh ids at start range already defined
-            if (newFreshIdrange.Item1 < finalFreshIdRanges[i].Item2 &&
+            // finalFreshIdRanges: [(3,5), (10,14)]
+            // newFreshIdRange: (7,18)
+            // expectedFinalFreshIdRanges: [(3,5), (7,18)]
+            if (newFreshIdrange.Item1 < finalFreshIdRanges[i].Item1 &&
                 newFreshIdrange.Item2 > finalFreshIdRanges[i].Item2)
             {
-                finalFreshIdRanges.Add(Tuple.Create<long,long>(finalFreshIdRanges[i].Item2 + 1, newFreshIdrange.Item2));
+                finalFreshIdRanges[i] = Tuple.Create(newFreshIdrange.Item1, newFreshIdrange.Item2);
+                break;
+            }
+
+            // finalFreshIdRanges: [(3,5), (10,14)]
+            // newFreshIdRange: (11,13)
+            // expectedFinalFreshIdRanges: [(3,5), (10,14)]
+            if (newFreshIdrange.Item1 > finalFreshIdRanges[i].Item1 &&
+                newFreshIdrange.Item2 < finalFreshIdRanges[i].Item2)
+            {
+                break;
+            }
+
+            //// fresh ids at start range already defined
+            ///case1: finalFreshIdRanges = [(3,5),(10,14)]
+            /// newFreshIdRange = (12,18)
+            ///finalFreshIdRanges = [(3,5),(10,18)]
+            ///
+            ///case2: finalFreshIdRanges = [(3,5),(10,10)]
+            /// newFreshIdRange = (10,14)
+            ///finalFreshIdRanges = [(3,5),(10,14)]
+            if (newFreshIdrange.Item1 <= finalFreshIdRanges[i].Item2 &&
+                newFreshIdrange.Item2 > finalFreshIdRanges[i].Item2)
+            {
+                finalFreshIdRanges[i] = Tuple.Create(finalFreshIdRanges[i].Item1, newFreshIdrange.Item2);
                 break;
             }
 
             //// fresh ids at end range already defined
-            //if (newFreshIdrange.Item1 > finalFreshIdRanges[i].Item2 &&
-            //    newFreshIdrange.Item2 > finalFreshIdRanges[i + 1].Item1)
-            //{
-            //    var start = newFreshIdrange.Item1;
-            //    var end = finalFreshIdRanges[i + 1].Item1;
-
-            //    finalFreshIdRanges.Add(Tuple.Create<long, long>(newFreshIdrange.Item1, finalFreshIdRanges[i + 1].Item1 - 1));
-            //    break;
-            //}
-
-
+            ///case1: finalFreshIdRanges = [(3,5),(10,14)]
+            /// newFreshIdRange = (7,12)
+            ///finalFreshIdRanges = [(3,5),(7,14)]
+            ///
+            ///case2: finalFreshIdRanges = [(3,5),(10,10)]
+            /// newFreshIdRange = (7,10)
+            ///finalFreshIdRanges = [(3,5),(7,10)]
+            if (newFreshIdrange.Item1 < finalFreshIdRanges[i].Item1 &&
+                newFreshIdrange.Item2 >= finalFreshIdRanges[i].Item1)
+            {
+                finalFreshIdRanges[i] = Tuple.Create(newFreshIdrange.Item1, finalFreshIdRanges[i].Item2);
+                break;
+            }
         }
     }
 
