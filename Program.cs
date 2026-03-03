@@ -1,6 +1,4 @@
-﻿// part 2 between 6527 and 7462
-
-using AdvendOfCode.Days;
+﻿using AdvendOfCode.Days;
 
 Console.WriteLine("Welcome to Advent of Code");
 int day = -1;
@@ -21,27 +19,25 @@ while (runProgram)
     switch (day)
     {
         case 1:
-            var dayOne = new Day01();
-            result = dayOne.Run(isDemoRun);
+            result = new Day01().Run(isDemoRun);
             break;
 
         case 2:
-            var dayTwo = new Day02();
-            result = dayTwo.Run(isDemoRun);
+            result = new Day02().Run(isDemoRun);
             break;
         case 3:
-            var dayThree = new Day03();
-            result = dayThree.Run(isDemoRun);
+            result = new Day03().Run(isDemoRun);
             break;
         case 4:
-            var dayFour = new Day04();
-            result = dayFour.Run(isDemoRun);
+            result = new Day04().Run(isDemoRun);
             break;
         case 5:
-            var dayFive = new Day05();
-            result = dayFive.Run(isDemoRun);
+            result = new Day05().Run(isDemoRun);
             break;
 
+        case 6:
+            result = new Day06().Run(isDemoRun);
+            break;
         default:
 
             break;
