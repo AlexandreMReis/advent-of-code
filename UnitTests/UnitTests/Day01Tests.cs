@@ -40,7 +40,7 @@ namespace UnitTests
 
         private List<string> GetFinalInput()
         {
-            string input = File.ReadAllText("input-d1.txt");
+            string input = File.ReadAllText("Inputs\\input-d1.txt");
             return input.Split("\r\n").ToList();
         }
 

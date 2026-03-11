@@ -11,7 +11,7 @@ public class Day03
         }
         else
         {
-            banksStr = File.ReadAllText("input-d3.txt");
+            banksStr = File.ReadAllText("Inputs\\input-d3.txt");
         }
 
         var banks = banksStr.Split("\r\n").ToList();

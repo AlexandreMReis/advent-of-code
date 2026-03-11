@@ -21,7 +21,6 @@ while (runProgram)
         case 1:
             result = new Day01().Run(isDemoRun);
             break;
-
         case 2:
             result = new Day02().Run(isDemoRun);
             break;
@@ -34,9 +33,11 @@ while (runProgram)
         case 5:
             result = new Day05().Run(isDemoRun);
             break;
-
         case 6:
             result = new Day06().Run(isDemoRun);
+            break;
+        case 7:
+            result = new Day07().Run(isDemoRun);
             break;
         default:
 

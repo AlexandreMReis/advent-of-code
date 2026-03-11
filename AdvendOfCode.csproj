@@ -14,22 +14,28 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="input-d6.txt">
+    <None Update="Inputs\input-d7 - Copy.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input-d5.txt">
+    <None Update="Inputs\input-d7.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input-d4.txt">
+    <None Update="Inputs\input-d6.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input-d3.txt">
+    <None Update="Inputs\input-d5.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input-d2.txt">
+    <None Update="Inputs\input-d4.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input-d1.txt">
+    <None Update="Inputs\input-d3.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Inputs\input-d2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Inputs\input-d1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -78,7 +78,7 @@ namespace UnitTests
 
         private List<char[]> GetFinalInput()
         {
-            string input = File.ReadAllText("input-d4.txt");
+            string input = File.ReadAllText("Inputs\\input-d4.txt");
             
             var linesOfRolls = input.Split("\r\n").ToList();
 

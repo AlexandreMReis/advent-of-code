@@ -11,7 +11,7 @@ public class Day01
         }
         else
         {
-            inputMovements = File.ReadAllText("input-d1.txt");
+            inputMovements = File.ReadAllText("Inputs\\input-d1.txt");
         }
 
         var movements = inputMovements.Split("\r\n").ToList();

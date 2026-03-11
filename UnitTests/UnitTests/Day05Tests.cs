@@ -130,7 +130,7 @@ namespace UnitTests
 
         private Tuple<List<string>, List<string>> GetFinalInput()
         {
-            var inputStr = File.ReadAllText("input-d5.txt");
+            var inputStr = File.ReadAllText("Inputs\\input-d5.txt");
 
             var rangesAndIdsStr = inputStr.Split("\r\n\r\n");
 

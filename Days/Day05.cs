@@ -13,7 +13,7 @@ public class Day05
         }
         else
         {
-            inputStr = File.ReadAllText("input-d5.txt");
+            inputStr = File.ReadAllText("Inputs\\input-d5.txt");
         }
 
         var rangesAndIdsStr = inputStr.Split("\r\n\r\n");

@@ -11,7 +11,7 @@ public class Day02
         }
         else
         {
-            idsRangesStr = File.ReadAllText("input-d2.txt");
+            idsRangesStr = File.ReadAllText("Inputs\\input-d2.txt");
         }
 
         var idsRanges = idsRangesStr.Split(",").ToList();

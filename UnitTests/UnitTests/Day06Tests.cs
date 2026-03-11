@@ -83,7 +83,7 @@ namespace UnitTests
 
         private List<List<string>> GetFinalInput()
         {
-            var inputStr = File.ReadAllText("input-d6.txt");
+            var inputStr = File.ReadAllText("Inputs\\input-d6.txt");
 
             var rows = inputStr.Split("\r\n");
 
@@ -99,7 +99,7 @@ namespace UnitTests
 
         private List<string> GetFinalPartTwoInput()
         {
-            var inputStr = File.ReadAllText("input-d6.txt");
+            var inputStr = File.ReadAllText("Inputs\\input-d6.txt");
 
             return inputStr.Split("\r\n").ToList();
         }

@@ -13,7 +13,7 @@ public class Day04
         }
         else
         {
-            linesOfRollsStr = File.ReadAllText("input-d4.txt");
+            linesOfRollsStr = File.ReadAllText("Inputs\\input-d4.txt");
         }
 
         var linesOfRolls = linesOfRollsStr.Split("\r\n").ToList();

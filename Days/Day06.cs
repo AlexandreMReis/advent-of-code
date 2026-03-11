@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Drawing;
 
 namespace AdvendOfCode.Days;
 
@@ -14,7 +13,7 @@ public class Day06
         }
         else
         {
-            inputStr = File.ReadAllText("input-d6.txt");
+            inputStr = File.ReadAllText("Inputs\\input-d6.txt");
         }
 
         var rows = inputStr.Split("\r\n").ToList();
