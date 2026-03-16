@@ -24,16 +24,16 @@ public class Day08
 
         var rows = inputStr.Split("\r\n").ToList();
 
+        //var sw = Stopwatch.StartNew();
+
+        ////var output = ResolvePartOne(rows, nbrOfConnections);
+        //sw.Stop();
+        //Console.WriteLine("Result part one: " + output);
+        //Console.WriteLine("Elapsed time on part one: " + sw.ElapsedMilliseconds);
+
         var sw = Stopwatch.StartNew();
 
-        var output = ResolvePartOne(rows, nbrOfConnections);
-        sw.Stop();
-        Console.WriteLine("Result part one: " + output);
-        Console.WriteLine("Elapsed time on part one: " + sw.ElapsedMilliseconds);
-
-        sw = Stopwatch.StartNew();
-
-        output = ResolvePartTwo(rows);
+        var output = ResolvePartTwo(rows);
 
         sw.Stop();
         Console.WriteLine("Result part two: " + output);
@@ -45,40 +45,9 @@ public class Day08
     //Kruskal algorithm - Minimum spanning tree truncated
     public double ResolvePartOne(List<string> input, int nbrOfConnections)
     {
-        var points = new List<Point3D>();
-        int pi = 0;
-        foreach (var point in input)
-        {
-            Console.WriteLine("On point iterator: " + pi);
-            pi++;
-            var coordinates = point.Split(',');
-            if (coordinates.Length != 3)
-            {
-                throw new ArgumentException("Invalid 3D point");
-            }
+        var points = ParsePoints(input);
 
-            points.Add(new Point3D()
-            {
-                X = int.Parse(coordinates[0]),
-                Y = int.Parse(coordinates[1]),
-                Z = int.Parse(coordinates[2]),
-            });
-        }
-
-        var pathsDistances = new PriorityQueue<(Point3D,Point3D), double>();
-        for (int i = 0; i < points.Count; i++)
-        {
-            var startPoint = points[i];
-            var endPoints = points.Where(p => p.GetKey() != startPoint.GetKey()).ToList();
-            for (var j = 0; j < endPoints.Count; j++)
-            {
-                if (i > j) continue;
-                var endPoint = endPoints[j];
-                Console.WriteLine($"({i}, {j})");
-                var distance = startPoint.GetDistanceTo(endPoint);
-                pathsDistances.Enqueue((startPoint, endPoint), distance);
-            }
-        }
+        var pathsDistances = BuildPathDistances(points);
 
         var currentCircuits = new List<Circuit>() { };
         foreach(var point in points)
@@ -103,6 +72,79 @@ public class Day08
         return output;
     }
 
+    public List<Point3D> ParsePoints(List<string> input)
+    {
+        var points = new List<Point3D>();
+        int pi = 0;
+        foreach (var point in input)
+        {
+            Console.WriteLine("On point iterator: " + pi);
+            pi++;
+            var coordinates = point.Split(',');
+            if (coordinates.Length != 3)
+            {
+                throw new ArgumentException("Invalid 3D point");
+            }
+
+            points.Add(new Point3D()
+            {
+                X = int.Parse(coordinates[0]),
+                Y = int.Parse(coordinates[1]),
+                Z = int.Parse(coordinates[2]),
+            });
+        }
+
+        return points;
+    }
+
+    public PriorityQueue<(Point3D, Point3D), double> BuildPathDistances(List<Point3D> points)
+    {
+        var pathsDistances = new PriorityQueue<(Point3D, Point3D), double>();
+        for (int i = 0; i < points.Count; i++)
+        {
+            var startPoint = points[i];
+            var endPoints = points.Where(p => p.GetKey() != startPoint.GetKey()).ToList();
+            for (var j = 0; j < endPoints.Count; j++)
+            {
+                if (i > j) continue;
+                var endPoint = endPoints[j];
+                Console.WriteLine($"({i}, {j})");
+                var distance = startPoint.GetDistanceTo(endPoint);
+                pathsDistances.Enqueue((startPoint, endPoint), distance);
+            }
+        }
+
+        return pathsDistances;
+    }
+
+    public double ResolvePartTwo(List<string> input)
+    {
+        var points = ParsePoints(input);
+
+        var pathsDistances = BuildPathDistances(points);
+
+        var currentCircuits = new List<Circuit>() { };
+        foreach (var point in points)
+        {
+            currentCircuits.Add(new Circuit() { Points = new List<Point3D>() { point } });
+        }
+
+        var connectionsTaken = 0;
+        (Point3D, Point3D) edge = new();
+        while (true)
+        {
+            edge = pathsDistances.Dequeue();
+            AddEdgeToCircuits(edge, currentCircuits);
+            connectionsTaken++;
+            if(currentCircuits.Count == 1)
+            {
+                break;
+            }
+        }
+
+        return edge.Item1.X * edge.Item2.X;
+    }
+
     public void AddEdgeToCircuits((Point3D, Point3D) edge, List<Circuit> circuits)
     {
         var isRedundant = circuits.Any(c => c.Points.Any(p => p.GetKey() == edge.Item1.GetKey()) && c.Points.Any(p => p.GetKey() == edge.Item2.GetKey()));
@@ -119,17 +161,12 @@ public class Day08
         var index = circuits.FindLastIndex(c => c.GetKey() == circuitB.GetKey());
         circuits.RemoveAt(index);
     }
-
-    public long ResolvePartTwo(List<string> input)
-    {
-        return 0;
-    }
 }
 
 public class Point3D {
-    public int X {get; set;}
-    public int Y {get; set;}
-    public int Z {get; set;}
+    public double X {get; set;}
+    public double Y {get; set;}
+    public double Z {get; set;}
 
     public Point3D() { }
 
