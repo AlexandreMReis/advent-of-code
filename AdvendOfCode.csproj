@@ -14,7 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Inputs\input-d7 - Copy.txt">
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Inputs\input-d8.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Inputs\input-d7.txt">

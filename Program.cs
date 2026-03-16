@@ -3,7 +3,7 @@
 Console.WriteLine("Welcome to Advent of Code");
 int day = -1;
 var runProgram = true;
-long result = -1;
+double result = -1;
 
 while (runProgram)
 {
@@ -38,6 +38,9 @@ while (runProgram)
             break;
         case 7:
             result = new Day07().Run(isDemoRun);
+            break;
+        case 8:
+            result = new Day08().Run(isDemoRun);
             break;
         default:
 
